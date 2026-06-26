@@ -4,6 +4,7 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CanvasApiSource } from './sources/canvas-api.js';
 import { CanvasSource } from './sources/canvas-source.js';
+import { CanvasCliSource } from './sources/canvas-cli-source.js';
 import { BrowserBridgeShellRunner } from './sources/browser-bridge.js';
 import type {
   CanvasAssignmentEnvelope,
@@ -97,6 +98,20 @@ interface CanvasFetcher {
 
 function resolveCanvasSource(): { source: CanvasFetcher } | { error: string } {
   const sourceKind = (process.env.CANVAS_SOURCE ?? 'api').trim();
+
+  // Token-free source backed by the canvas-cli companion (browser SSO). Use
+  // this for schools that disable Canvas API tokens. `browser` is an alias.
+  if (sourceKind === 'canvas-cli' || sourceKind === 'browser') {
+    return {
+      source: new CanvasCliSource({
+        bin: process.env.CANVAS_CLI_BIN,
+        baseUrl: process.env.CANVAS_BASE_URL,
+        profileName: process.env.CANVAS_PROFILE_NAME,
+        logger: (msg) => console.error(msg),
+      }),
+    };
+  }
+
   if (sourceKind === 'browser-bridge') {
     const binaryPath = process.env.BROWSER_BRIDGE_PATH;
     if (!binaryPath) {
@@ -428,7 +443,9 @@ async function main(): Promise<void> {
           '\n' +
           'Env:\n' +
           '  CANVAS_BASE_URL, CANVAS_API_TOKEN  (default REST API source)\n' +
-          '  CANVAS_SOURCE=browser-bridge       (optional fallback; needs BROWSER_BRIDGE_PATH)\n' +
+          '  CANVAS_SOURCE=canvas-cli           (token-free; uses the canvas-cli companion, alias "browser")\n' +
+          '  CANVAS_CLI_BIN                     (path to canvas-cli; default "canvas-cli")\n' +
+          '  CANVAS_SOURCE=browser-bridge       (advanced fallback; needs BROWSER_BRIDGE_PATH)\n' +
           '  CANVAS_DIGEST_SNAPSHOT_DIR         (where snapshots are written; default ./snapshots)\n' +
           '  TELEGRAM_BOT_TOKEN, TELEGRAM_USER_ID, DISCORD_WEBHOOK_URL  (optional delivery)',
       );

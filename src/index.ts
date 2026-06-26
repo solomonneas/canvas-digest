@@ -38,6 +38,17 @@ export { SNAPSHOT_VERSION, SNAPSHOT_VERSION_LINE } from './snapshot/format.js';
 export { CanvasApiSource } from './sources/canvas-api.js';
 export type { CanvasApiSourceOptions } from './sources/canvas-api.js';
 export {
+  CanvasCliSource,
+  CanvasCliUnavailableError,
+  DEFAULT_CANVAS_CLI_BIN,
+  DEFAULT_CANVAS_CLI_TIMEOUT_MS,
+} from './sources/canvas-cli-source.js';
+export type {
+  CanvasCliSourceOptions,
+  CanvasCliRunner,
+  CanvasCliRunResult,
+} from './sources/canvas-cli-source.js';
+export {
   BrowserBridgeShellRunner,
   DEFAULT_PROFILE_NAME,
   DEFAULT_TIMEOUT_MS,

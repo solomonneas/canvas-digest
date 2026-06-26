@@ -13,7 +13,15 @@ It can optionally deliver the brief to Telegram and/or Discord. With no delivery
 
 ## How it works
 
-By default `canvas-digest` talks to the Canvas REST API using a personal access token. No extra services, no browser automation. For schools that disable API tokens, an optional browser-bridge fallback exists (see [Browser-bridge fallback](#browser-bridge-fallback)).
+`canvas-digest` can read your Canvas data three ways, selected with `CANVAS_SOURCE`:
+
+| `CANVAS_SOURCE` | What it uses | When to use |
+|---|---|---|
+| `api` (default) | Canvas REST API + a personal access token | The simplest path when your school allows API tokens. |
+| `canvas-cli` (alias `browser`) | The [`canvas-cli`](https://www.npmjs.com/package/canvas-cli) companion, which logs in through your school's normal browser SSO (no token) | **Recommended for schools that disable Canvas tokens** (e.g. some universities). |
+| `browser-bridge` | Your own browser-bridge binary | Advanced fallback (see [Browser-bridge fallback](#browser-bridge-fallback)). |
+
+All three produce the identical internal snapshot, so the digest, diff, and delivery behave the same regardless of source.
 
 ## Requirements
 
@@ -28,7 +36,7 @@ By default `canvas-digest` talks to the Canvas REST API using a personal access 
 4. Give it a purpose (e.g. "canvas-digest") and, optionally, an expiry.
 5. Click **Generate Token** and copy the token immediately (Canvas only shows it once).
 
-If your school has disabled token generation, that section will be missing or greyed out. Use the [browser-bridge fallback](#browser-bridge-fallback) instead.
+If your school has disabled token generation, that section will be missing or greyed out. Use the [token-free source via canvas-cli](#token-free-source-via-canvas-cli) instead.
 
 ## Install
 
@@ -50,6 +58,8 @@ cp .env.example .env
 ```
 
 ```
+# Source: api (default), canvas-cli (token-free, alias "browser"), or browser-bridge
+CANVAS_SOURCE=api
 CANVAS_BASE_URL=https://your-school.instructure.com
 CANVAS_API_TOKEN=your-canvas-api-token
 # optional delivery
@@ -144,9 +154,40 @@ Each run writes a Markdown file named `<YYYY-MM-DD>.md` containing a human-reada
 0 7 * * *  cd /path/to/canvas-digest && export $(grep -v '^#' .env | grep -v '^$' | xargs) && node dist/cli.js run
 ```
 
+## Token-free source via canvas-cli
+
+Some schools (for example many universities) disable Canvas personal access tokens, so the default `api` source cannot authenticate. For those accounts, point `canvas-digest` at the [`canvas-cli`](https://www.npmjs.com/package/canvas-cli) companion. `canvas-cli` logs in once through your school's normal browser SSO (via Playwright) and keeps a persistent session, so no token is ever needed. `canvas-digest` shells out to it, asks for JSON, and maps the result into the same snapshot the API source produces.
+
+### Quickstart
+
+```bash
+# 1. Install the companion CLI and a browser for it.
+npm i -g canvas-cli
+npx playwright install chromium
+
+# 2. Log in once. A real Chromium window opens; complete your school's SSO.
+CANVAS_BASE_URL=https://your-school.instructure.com canvas-cli login
+
+# 3. Run canvas-digest against the token-free source.
+CANVAS_SOURCE=canvas-cli CANVAS_BASE_URL=https://your-school.instructure.com canvas-digest run
+```
+
+After the one-time `canvas-cli login`, scheduled runs are non-interactive as long as the session stays valid. If a run reports that canvas-cli is not logged in, run `canvas-cli login` again to refresh the session.
+
+### Configuration
+
+```
+CANVAS_SOURCE=canvas-cli                            # or "browser" (alias)
+CANVAS_BASE_URL=https://your-school.instructure.com # passed to canvas-cli as --base-url
+CANVAS_CLI_BIN=canvas-cli                           # optional: path/name of the binary (default "canvas-cli")
+CANVAS_PROFILE_NAME=default                         # optional: named canvas-cli login profile
+```
+
+If `canvas-cli` is not installed or you are not logged in, `canvas-digest` fails fast with a clear message ("install canvas-cli and run `canvas-cli login`, or use CANVAS_SOURCE=api with a token") instead of producing an empty digest.
+
 ## Browser-bridge fallback
 
-Some schools disable Canvas API tokens. For those cases, `canvas-digest` supports a fallback source that drives a logged-in Chrome profile through a separate "browser-bridge" binary.
+This is an **advanced** path. Most token-blocked schools should use the [token-free canvas-cli source](#token-free-source-via-canvas-cli) above. The browser-bridge source drives a logged-in Chrome profile through a separate "browser-bridge" binary that you supply.
 
 The browser-bridge binary is **not** included with this project and is **off by default**. To use it:
 
