@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Runs the full verify gate: npm test, npm run typecheck, npm run build.
+      # All tests use injected fakes (fetch spies, fake spawn/runner objects),
+      # so no live SSO/Telegram/Discord access is needed on a fresh runner.
+      - name: Verify
+        run: ./scripts/verify

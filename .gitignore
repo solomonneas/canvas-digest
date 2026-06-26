@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+.vitest-cache/
+
+# Daily snapshot output
+snapshots/
+
+# Local agent state (never committed)
+.claude/
+.brigade/
+/memory/

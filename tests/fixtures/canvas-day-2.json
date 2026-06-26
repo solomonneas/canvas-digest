@@ -1,0 +1,110 @@
+{
+  "fetched_at": "2026-05-17T11:00:00Z",
+  "canvas": {
+    "fetched_at": "2026-05-17T11:00:00Z",
+    "courses": [
+      {
+        "course_id": "1001",
+        "code": "EEL 6787",
+        "name": "Data Networks, Systems and Security",
+        "term": "Summer 2026",
+        "url": "https://your-school.instructure.com/courses/1001"
+      }
+    ],
+    "assignments": [
+      {
+        "assignment_id": "5001",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "discussion_topic",
+        "title": "Module 1 Discussion Post",
+        "due_at": "2026-05-21T23:59:00Z",
+        "due_at_local": "2026-05-21 19:59 ET",
+        "points_possible": 10,
+        "submission_status": "not_submitted",
+        "url": "https://your-school.instructure.com/courses/1001/assignments/5001",
+        "labels": ["discussion"]
+      },
+      {
+        "assignment_id": "5002",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "online_upload",
+        "title": "Module 1 Lab Report",
+        "due_at": "2026-05-23T23:59:00Z",
+        "due_at_local": "2026-05-23 19:59 ET",
+        "points_possible": 50,
+        "submission_status": "not_submitted",
+        "url": "https://your-school.instructure.com/courses/1001/assignments/5002",
+        "labels": []
+      },
+      {
+        "assignment_id": "5000",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "online_text_entry",
+        "title": "Syllabus Acknowledgment",
+        "due_at": "2026-05-12T23:59:00Z",
+        "due_at_local": "2026-05-12 19:59 ET",
+        "points_possible": 10,
+        "submission_status": "graded",
+        "url": "https://your-school.instructure.com/courses/1001/assignments/5000",
+        "labels": []
+      }
+    ],
+    "notifications": [
+      {
+        "notification_id": "7001",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "announcement",
+        "title": "Welcome to EEL 6787",
+        "summary": "Welcome to EEL 6787 - Dr. X",
+        "url": "https://your-school.instructure.com/courses/1001/discussion_topics/7001",
+        "posted_at": "2026-05-15T13:00:00Z",
+        "labels": []
+      },
+      {
+        "notification_id": "7002",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "announcement",
+        "title": "Office hours moved to Friday",
+        "summary": "Dr. X moved office hours to Friday",
+        "url": "https://your-school.instructure.com/courses/1001/discussion_topics/7002",
+        "posted_at": "2026-05-17T08:00:00Z",
+        "labels": ["unread"]
+      },
+      {
+        "notification_id": "432-r2",
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "kind": "discussion_reply",
+        "title": "Module 1 Intro Thread",
+        "summary": "2 new replies",
+        "url": "https://your-school.instructure.com/courses/1001/discussion_topics/432",
+        "posted_at": "2026-05-17T09:15:00Z",
+        "labels": ["unread"]
+      }
+    ],
+    "by_course": [
+      {
+        "course_id": "1001",
+        "course_code": "EEL 6787",
+        "course_name": "Data Networks, Systems and Security",
+        "count": 3
+      }
+    ],
+    "sources_ok": {
+      "courses": true,
+      "assignments": true,
+      "notifications": true
+    }
+  }
+}
