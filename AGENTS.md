@@ -36,3 +36,17 @@ Re-run them after your final edit, not from memory of an earlier run. Report the
 - The browser-bridge binary is a separate, user-supplied program with no default path; it is selected only via `CANVAS_SOURCE=browser-bridge` + `BROWSER_BRIDGE_PATH`. Token-based API access is the default.
 - Browser-bridge Canvas calls run sequentially on purpose: a single Chrome profile lock allows one session at a time. Do not parallelize them.
 - A green test suite proves nothing about a live Canvas account or browser profile; tests use injected fakes.
+
+## GitHub agent attribution
+
+In this repository, every issue body, pull request body, and GitHub comment an agent writes or edits on Solomon's behalf ends with this block. Keep the human author identity. Use the actual model, harness, and client. Credit only work performed, include the provider if a model name is ambiguous, and list each review pass. Report the exact checks and observed results above the block. Credit verification to the model that ran the checks.
+
+```text
+Sent on behalf of Solomon by <orchestrator model> via <harness> in <client>
+Models used:
+- Implementation/build: <model> via <harness>, or none
+- Test/verification: <model> via <harness> (checks: listed above), or not run
+- Review: <model> via <harness> for each pass, or none
+```
+
+Every agent-written review comment and review summary also includes `Review by <model> via <harness> in <client>`.
